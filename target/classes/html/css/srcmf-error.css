@@ -1,0 +1,206 @@
+.top-buffer { margin-top:20px; }
+    body{margin:40px;}
+
+
+    .btn-circle {
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 12px;
+      line-height: 1.428571429;
+      border-radius: 15px;
+    }
+    .btn-circle.btn-lg {
+      width: 50px;
+      height: 50px;
+      padding: 10px 16px;
+      font-size: 18px;
+      line-height: 1.33;
+      border-radius: 25px;
+    }
+    .btn-circle.btn-xl {
+      width: 70px;
+      height: 70px;
+      padding: 10px 16px;
+      font-size: 24px;
+      line-height: 1.33;
+      border-radius: 35px;
+    }
+
+    .fixed-panel {
+              min-height: 10;
+              max-height: 10;
+              overflow-y: scroll;
+    }
+    .word-wrap {
+      word-wrap: break-word;
+    }
+
+    .toggle.ios, .toggle-on.ios, .toggle-off.ios { border-radius: 20px; }
+  .toggle.ios .toggle-handle { border-radius: 20px; }
+  
+  /**/
+  /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 550px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+        
+    /* On small screens, set height to 'auto' for the grid */
+    @media screen and (max-width: 767px) {
+      .row.content {height: auto;} 
+    }
+
+
+
+
+
+/* Scroll bar */
+
+    /* make the scrollbar a little wider */
+    ::-webkit-scrollbar {
+        width: 16px;
+    }
+    ::-webkit-scrollbar-track  {
+        background-color: white;
+    }
+    /* the slider or "thumb" has some rounded edges and a shadow and it's a little translucent */
+    ::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        background: rgba(159,216,239,0.8);
+    }
+    /* I don't like the scrollbar to be so tiny on large documents - hence I set a minimum height */
+    ::-webkit-scrollbar-thumb:vertical {
+        min-height: 100px;
+    }
+    /* Use a more translucent slider when the window is inactive */
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(159,216,239,0.2); 
+    }
+
+    html {
+     overflow: -moz-scrollbars-vertical;
+     overflow: scroll;
+    }
+/* Scroll bar end */ 
+
+/* Top fixed Navbar */
+body { padding-top: 60px; }
+/* Top fixed Navbar end */
+
+/* Spinner */
+/*.spinner {
+  display: inline-block;
+  opacity: 0;
+  width: 0;
+
+  -webkit-transition: opacity 0.25s, width 0.25s;
+  -moz-transition: opacity 0.25s, width 0.25s;
+  -o-transition: opacity 0.25s, width 0.25s;
+  transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+  cursor:progress;
+}
+
+.has-spinner.active .spinner {
+  opacity: 1;
+  width: auto; /* This doesn't work, just fix for unkown width elements */
+}
+/*
+.has-spinner.btn-mini.active .spinner {
+    width: 10px;
+}
+
+.has-spinner.btn-small.active .spinner {
+    width: 13px;
+}
+
+.has-spinner.btn.active .spinner {
+    width: 16px;
+}
+
+.has-spinner.btn-large.active .spinner {
+    width: 19px;
+}
+/* Sipnner end */
+
+/* Loading */
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.modal {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('http://i.stack.imgur.com/FhHRx.gif') 
+                50% 50% 
+                no-repeat;
+}
+
+/* When the body has the loading class, we turn
+   the scrollbar off with overflow:hidden */
+body.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+body.loading .modal {
+    display: block;
+}
+
+.loading {
+    overflow: hidden;   
+}
+
+/* Anytime the body has the loading class, our
+   modal element will be visible */
+.loading .modal {
+    display: block;
+}
+/* Loading end */
+
+
+/* table for print */
+table{ border-collapse: collapse;  width: 100%; }
+th, td {  text-align: left;  padding: 8px;}tr:nth-child(even){background-color: #f2f2f2}
+th { background-color: #4CAF50; color: white; }
+/*tr:hover {background-color: #e6ffcc}*/
+tr.hoveractive:hover {background-color: #e6ffcc}
+/* table for print end */
+
+/* side-bar */
+./*sidebar-wrapper {
+  margin-left: -250px;
+  left: 250px;
+  width: 250px;
+  background: #CCC;
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+  /*z-index: 1000;
+  transition: all 0.4s ease 0s;
+}*/
+
+#slider {
+   background-color: #ccb3ff;
+   opacity:1;
+   margin-top:100px;
+}
+
+
+/* side-bar end */

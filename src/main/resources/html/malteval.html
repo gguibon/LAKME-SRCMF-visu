@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LakmeVisu</title>
+    <style>
+    {csshere}
+    </style>
+
+  </head>
+ <body>
+
+<nav class="navbar navbar-inverse visible-xs">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+      <li><a id="MaltEval" href="#">MaltEval</a></li>
+      <li><a id="ErrorViewer" onclick="call.goToErrorViewer()"href="#">ErrorInspector</a></li> 
+    </ul>
+    </div>
+  </div>
+</nav>
+
+<div  class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-2 sidenav hidden-xs">
+      <h2>Logo</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a id="MaltEval" href="#section1">MaltEval</a></li>
+      <li><a id="ErrorViewer" onclick="call.goToErrorViewer()"href="#">ErrorInspector</a></li> 
+      </ul><br>
+    </div>
+    <br>
+
+    
+   <span id="page"> 
+    <div class="col-sm-10">
+      <div class="well">
+        <h4>Tsv2MaltEval</h4>
+        <p>Some text..</p>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="well">
+            <button id="fc1" onclick="call.fc('alertfc1')" type="button" class="btn btn-primary btn-xl"  > Open Gold File</button>
+            <div class="panel panel-info">
+              <div class="panel-heading">File path:</div>
+              <div id="alertfc1" class="panel-body fixed-panel" ></div>
+            </div> 
+          </div>
+        </div>
+        <div class="col-sm-3">
+          
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <button id="fc2" onclick="call.fc('alertfc2')" type="button" class="btn btn-primary btn-xl"  > Open Predicted File</button>
+          <div class="panel panel-info">
+            <div class="panel-heading">File path:</div>
+            <div id="alertfc2" class="panel-body fixed-panel" ></div>
+          </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-info">
+            <div class="panel-heading">
+                <button class="btn btn-warning btn-xl" data-toggle="collapse" data-target="#custom"  >Customize entry format</button>
+            </div>
+      </div>
+      </div>
+      </div>
+  <div id="custom" class="panel-body collapse">
+  <div class="row top-buffer">
+
+    <div class="container">
+      <div class="col-md-4">
+        <div class="btn-group" data-toggle="buttons">
+          <button id="srcmf" type="button" onclick="call.setPreset(this.id)" class="btn btn-info btn-xl"  > SRCMF</button>
+          <button id="malt" type="button" onclick="call.setPreset(this.id)" class="btn btn-info btn-xl"  > MALT</button>
+        </div>
+      </div>
+      <div class="col-md-8" > 
+        <span  >
+        <input id="deleteHeader" type="checkbox" data-toggle="toggle" data-on="Delete First Line" data-off="Keep First Line" data-onstyle="danger" data-offstyle="default" data-style="ios" data-width="200" checked >
+      </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row top-buffer">
+    <div class="container">
+    
+      <form>
+        <div class="col-md-1">
+          <label for="id">ID:</label>
+          <input type="number" id="id" class="values1" value="1" onblur="call.submit(this.id,this.value)" placeholder="ID" />
+        </div>
+        <div class="col-md-1">
+          <label for="form">Form:</label>
+          <input type="number" id="form" class="values1" value="2" onblur="call.submit(this.id,this.value)" placeholder="FORM" />
+        </div>
+        <div class="col-md-1">
+          <label for="lemma">Lemma:</label>
+          <input type="number" id="lemma" class="values1" value="4" onblur="call.submit(this.id,this.value)" placeholder="LEMMA" />
+        </div>
+        <div class="col-md-1">
+          <label for="cpostag">Cpostag:</label>
+          <input type="number" id="cpostag" class="values1" value="5" onblur="call.submit(this.id,this.value)" placeholder="CPOSTAG" />
+        </div>
+        <div class="col-md-1">
+          <label for="postag">Postag:</label>
+          <input type="number" id="postag" class="values1" value="6" onblur="call.submit(this.id,this.value)" placeholder="POSTAG" />
+        </div>
+        <div class="col-md-1">
+          <label for="feats">Feats:</label>
+          <input type="number" id="feats" class="values1" value="5" onblur="call.submit(this.id,this.value)" placeholder="FEATS" />
+        </div>
+        <div class="col-md-1">
+          <label for="head">Head:</label>
+          <input type="number" id="head" class="values1" value="10" onblur="call.submit(this.id,this.value)" placeholder="HEAD" />
+        </div>
+        <div class="col-md-1">
+          <label for="deprel">Deprel:</label>
+          <input type="number" id="deprel" class="values1" value="12" onblur="call.submit(this.id,this.value)" placeholder="DEPREL" />
+        </div>
+        <div class="col-md-1">
+          <label for="phead">Phead:</label>
+          <input type="number" id="phead" class="values1" value="10" onblur="call.submit(this.id,this.value)" placeholder="PHEAD" />
+        </div>  
+        <div class="col-md-1">
+          <label for="pdeprel">Pdeprel:</label>
+          <input type="number" id="pdeprel" class="values1" value="12" onblur="call.submit(this.id,this.value)" placeholder="PDEPREL" />
+        </div>
+        <div class="col-md-2">
+        </div>
+      </form>
+    </div>
+
+  </div>
+  </div>
+
+        
+
+
+        <div class="row">
+        <div class="col-sm-4">
+          
+        </div>
+        <div class="col-sm-4">
+          <button id="start" type="button" class="btn btn-danger btn-block btn-lg" ><h4>Start</h4></button>
+        </div>
+        <div class="col-sm-4">
+          
+        </div>
+      </div>
+      
+      </div>
+  </span>
+</div>
+<script>
+  {javascripthere}
+</script>
+    
+  </body>
+</html>
