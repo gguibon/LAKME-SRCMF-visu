@@ -7,11 +7,14 @@ import cnrs.lattice.srcmf.beans.MaltFormat;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class StartApp extends Application {
@@ -30,6 +33,7 @@ public class StartApp extends Application {
 		StackPane root = new StackPane();
         root.getChildren().add(browser);
         root1 = root;
+        
         
         MenuBar menuBar = new MenuBar();
         
@@ -52,6 +56,12 @@ public class StartApp extends Application {
 		stage.setScene(scene);
 		stage.setTitle("LAKME-SRCMF-visu");
 		stage.show();
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("LAKME SRCMF");
+		alert.setHeaderText("Welcome");
+		alert.setContentText("Welcome !");
+		alert.initModality(Modality.WINDOW_MODAL);
+		alert.showAndWait();
 
 		primaryStage.setOnCloseRequest(e -> Platform.exit());
 	}

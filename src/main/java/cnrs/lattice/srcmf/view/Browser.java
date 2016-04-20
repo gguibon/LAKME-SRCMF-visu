@@ -28,8 +28,10 @@ import cnrs.lattice.tools.corpus.Corpus;
 import cnrs.lattice.tools.corpus.Error;
 import cnrs.lattice.tools.corpus.Fixer;
 import eu.hansolo.enzo.notification.Notification.Notifier;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -40,7 +42,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -48,6 +53,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
+import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -71,16 +77,25 @@ public class Browser extends Region {
 	Stage stage;
 
 	public Browser(String url) throws Exception {
+		webView.setContextMenuEnabled(false);
+		createContextMenu(webView);
 		
 		Tools tool = new Tools();
 		String html = tool.accessRessourceFile(url);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(tool.accessRessourceFile("/html/css/bootstrap.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/css/bootstrap.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-theme.min.css") + "\n");
+		sb.append(tool.accessRessourceFile("/html/css/bootstrap-united.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-paper.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-spacelab.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-readable.min.css") + "\n");
 		sb.append(tool.accessRessourceFile("/html/css/bootstrap-toggle.min.css") + "\n");
 //		sb.append(tool.accessRessourceFile("/html/css/font-awesome.css") + "\n");
 		sb.append(tool.accessRessourceFile("/html/css/srcmf-error.css") + "\n");
 //		sb.append(tool.accessRessourceFile("/html/css/jasny-bootstrap.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/startbootstrap-creative-1.0.2/css/animate.min.css") + "\n");
+//		sb.append(tool.accessRessourceFile("/html/startbootstrap-creative-1.0.2/css/creative.css") + "\n");
 		String css = sb.toString();
 		html = html.replace("{csshere}", css)
 				.replaceAll("\\{upload\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/upload-arrow-with-bar.png").toExternalForm()+" height=\"24\" width=\"24\">")
@@ -96,7 +111,20 @@ public class Browser extends Region {
 				.replaceAll("\\{grade\\}","<img src="+getClass().getResource("/html/img/glyphicons/dark/a-plus-mark.png").toExternalForm()+" height=\"24\" width=\"24\">")
 				.replaceAll("\\{arc\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/curved-downward-arrow.png").toExternalForm()+" height=\"24\" width=\"24\">")
 				.replaceAll("\\{window\\}","<img src="+getClass().getResource("/html/img/glyphicons/dark/open-computer-window.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				
+				.replaceAll("\\{letter\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/letter.png").toExternalForm()+" height=\"24\" width=\"24\">")
+				//home
+				.replaceAll("\\{1\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/1.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{2\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/2.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{3\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/3.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{4\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/4.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{5\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/5.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{6\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/6.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
+				.replaceAll("\\{psl\\}","<img src="+getClass().getResource("/html/img/logo-psl.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{lattice\\}","<img src="+getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{enc\\}","<img src="+getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{ens\\}","<img src="+getClass().getResource("/html/img/logo-ens.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{sorbonne\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{sorbonne-nouvelle\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne-nouvelle.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
 				;
 		engine.loadContent(html);
 		engine.setOnAlert(new EventHandler<WebEvent<String>>() {
@@ -159,6 +187,35 @@ public class Browser extends Region {
 		return 500;
 	}
 
+	private void createContextMenu(WebView webView) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem goHome = new MenuItem("Go back to Home");
+        goHome.setOnAction(e -> {
+			try {
+				new Call().goToIndex();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+        MenuItem reload = new MenuItem("Reload Page");
+        reload.setOnAction(e -> webView.getEngine().reload());
+        MenuItem goPreviousPage = new MenuItem("Previous Page");
+        goPreviousPage.setOnAction(e -> new Call().goBack());
+        MenuItem goNextPage = new MenuItem("Next Page");
+        goNextPage.setOnAction(e -> new Call().goForward());
+        contextMenu.getItems().addAll(goHome, reload, goPreviousPage, goNextPage);
+
+        webView.setOnMousePressed(e -> {
+            if (e.getButton() == MouseButton.SECONDARY) {
+                contextMenu.show(webView, e.getScreenX(), e.getScreenY());
+            } else {
+                contextMenu.hide();
+            }
+        });
+    }
+
+	
 	/**
 	 * Class to receive call events. ex: onclick="call.method()"
 	 * 
@@ -176,7 +233,41 @@ public class Browser extends Region {
 		String var3 = "";
 		List<Tag> posTagsScores = new ArrayList<Tag>();
 		List<Tag> synTagsScores = new ArrayList<Tag>();
+		
+		
+		
+		/**
+		 * use webHistory to go back to the previous page
+		 * @return
+		 */
+		public String goBack()
+		  {    
+		    final WebHistory history=engine.getHistory();
+		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
+		    int currentIndex=history.getCurrentIndex();
+//		    Out("currentIndex = "+currentIndex);
+//		    Out(entryList.toString().replace("],","]\n"));
 
+		    Platform.runLater(new Runnable() { public void run() { history.go(-1); } });
+		    return entryList.get(currentIndex>0?currentIndex-1:currentIndex).getUrl();
+		  }
+		
+		/**
+		 * use webHistory to go forward to the next page
+		 * @return
+		 */
+		  public String goForward()
+		  {    
+		    final WebHistory history=engine.getHistory();
+		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
+		    int currentIndex=history.getCurrentIndex();
+//		    Out("currentIndex = "+currentIndex);
+//		    Out(entryList.toString().replace("],","]\n"));
+
+		    Platform.runLater(new Runnable() { public void run() { history.go(1); } });
+		    return entryList.get(currentIndex<entryList.size()-1?currentIndex+1:currentIndex).getUrl();
+		  }
+		
 		public void fc(String id) {
 			File currentDir = new File(System.getProperty("user.dir")); // System.getProperty("user.dir")
 			fileChooser.setTitle("Select a file");
@@ -377,7 +468,7 @@ public class Browser extends Region {
 			// "\");");
 			// initializeJS(engine);
 			// StartApp.root1.getChildren().remove(0);
-			StartApp.root1.getChildren().add(new Browser("/html/index2.html"));
+			StartApp.root1.getChildren().add(new Browser("/html/srcmf-lakme-viewer.html"));
 			// System.out.println("index");
 		}
 
@@ -949,7 +1040,7 @@ public class Browser extends Region {
 			t.start();
 		}
 
-		public void openPdf() throws Exception {
+		public void openPdf(String path) throws Exception {
 			// with PDFRenderer (does not seem to work)
 			// final PDFViewer pdfViewer = new PDFViewer(true);
 			// pdfViewer.openFile(new URL(pdf));
@@ -961,7 +1052,7 @@ public class Browser extends Region {
 
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
-				InputStream is = getClass().getResourceAsStream("/html/test.pdf");
+				InputStream is = getClass().getResourceAsStream(path);
 				// byte[] data = new byte[is.available()];
 				// is.read(data);
 				// is.close();
@@ -1035,7 +1126,14 @@ public class Browser extends Region {
 				e.printStackTrace();
 			}
 		}
-
+		
+		/**
+		 * launch arborator browser with internet connection to the arborator 
+		 * quick access page
+		 * @param content2inject The content to inject (i.e. the sentence)
+		 * @param id2retrieve (the sentence id in the data, to change in case of modifications)
+		 * @deprecated better use the arboratorLocal method
+		 */
 		public void arborator(String content2inject, String id2retrieve) {
 
 			Task<Void> task = new Task<Void>() {
@@ -1097,6 +1195,74 @@ public class Browser extends Region {
 			t.start();
 		}
 
+		
+		/**
+		 * launch arborator browser locally
+		 * @param content2inject The content to inject (i.e. the sentence)
+		 * @param id2retrieve (the sentence id in the data, to change in case of modifications)
+		 */
+		public void arboratorLocal(String content2inject, String id2retrieve) {
+
+			Task<Void> task = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
+					// makes the long-running API call
+
+					return null;
+				}
+			};
+			task.setOnRunning((WorkerStateEvent event) -> {
+				// disable ui
+				System.out.println("start arborator");
+				try {
+					enterLoading();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+			task.setOnCancelled((WorkerStateEvent event) -> {
+				// reenable ui
+				// handle cancel
+			});
+			task.setOnSucceeded((WorkerStateEvent event) -> {
+				// reenable ui
+				// handle succeed
+				ArboratorQuickAccessLocal arbo = new ArboratorQuickAccessLocal();
+				arbo.setContent(content2inject, id2retrieve);
+
+				try {
+					Stage popup = new Stage();
+					popup.initOwner(stage);
+					popup.initStyle(StageStyle.UTILITY);
+					popup.initModality(Modality.WINDOW_MODAL);
+
+					popup.setScene(arbo.getScene(popup));
+					popup.show();
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				exitLoading();
+			});
+
+			task.setOnFailed((WorkerStateEvent event) -> {
+				// reenable ui
+				// handle failed task e.g.:
+				executejQuery(engine, "$.unblockUI(); ");
+				executejQuery(engine, "alert('Oops, Error: " + task.getException() + "' );");
+				System.err.println("Oops, Error:");
+				task.getException().printStackTrace(System.err);
+			});
+
+			Thread t = new Thread(task);
+			// thread shouldn't prevent program shutdown
+			t.setDaemon(true);
+			t.start();
+		}
+		
+		
 		/**
 		 * refresh the sentences from the file, and show them in a table view
 		 * 
@@ -1181,7 +1347,7 @@ public class Browser extends Region {
 		public void editSent(String id) throws IOException, Exception {
 //			sentences = DataProcess.stockSentences(Corpus.getSentences(path1), maltFormat.map);
 			String content2inject = sentences.get(Integer.parseInt(id)).toMalt();
-			arborator(content2inject.replaceAll("'", "&apos;"), id);
+			arboratorLocal(content2inject.replaceAll("'", "&apos;"), id);
 		}
 		
 		/**
@@ -1373,6 +1539,14 @@ public class Browser extends Region {
 		// engine.executeScript(script);
 		script = new Tools().accessRessourceFile("/html/js/srcmf-error.js");
 		executejQuery(engine, DEFAULT_JQUERY_MIN_VERSION, JQUERY_LOCATION, script);
+		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/jquery.easing.min.js");
+		engine.executeScript(script);
+		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/query.fittext.js");
+		engine.executeScript(script);
+		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/wow.min.js");
+		engine.executeScript(script);
+		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/creative.js");
+		engine.executeScript(script);
 	}
 	
 	private static class ExitTrappedException extends SecurityException { }
