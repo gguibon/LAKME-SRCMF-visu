@@ -4,7 +4,7 @@ LAKME-SRCMF-visu
 This GUI tool regroup three ways to graphically view and edit syntactic tagged texts: 
 - Laucnh MaltEval in a graphical way and with any TSV format
 - Inspect parsing and part of speech tagging errors for any TSV format
-- Quick edit sentence and save the changes using Arborator with any TSV format
+- Quick edit sentence and save the changes using Arborator with any TSV format (need an internet connexion up till now, will be fixed later)
 
 A documentation is included in the program. you can access it by clicking on the book button.
 

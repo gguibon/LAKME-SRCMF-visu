@@ -162,6 +162,47 @@
 					<skipNativeLauncherWorkaround124>true</skipNativeLauncherWorkaround124>
 				</configuration>
 			</plugin>
+			<!-- <plugin>
+	            <groupId>com.akathist.maven.plugins.launch4j</groupId>
+	            <artifactId>launch4j-maven-plugin</artifactId>
+	            <version>1.5.1</version>
+	            <executions>
+	                <execution>
+	                    <id>l4j-clui</id>
+	                    <phase>package</phase>
+	                    <goals>
+	                        <goal>launch4j</goal>
+	                    </goals>
+	                    <configuration>
+	                        <headerType>gui</headerType>
+	                        <jar>/home/gael/workspacefx/LAKME-SRCMF-visu/target/LAKME-SRCMF-visu-1.0.0-jar-with-dependencies.jar</jar>
+	                        <outfile>${project.build.directory}/${project.name}-${project.version}.exe</outfile>
+	                        <downloadUrl>http://java.com/download</downloadUrl>
+	                        <classPath>
+	                            <mainClass>cnrs.lattice.srcmf.view.StartApp</mainClass>
+	                            <preCp>anything</preCp>
+	                        </classPath>
+	                        <icon>src/main/deploy/package/windows/LAKME-SRCMF-visu.ico</icon>
+	                        <jre>
+	                            <minVersion>1.8.0</minVersion>
+	                            <jdkPreference>preferJre</jdkPreference>
+	                        </jre>
+	                        <versionInfo>
+	                            <fileVersion>1.0.0.0</fileVersion>
+	                            <txtFileVersion>${project.version}</txtFileVersion>
+	                            <fileDescription>${project.name}</fileDescription>
+	                            <copyright>2016 Lattice-CNRS</copyright>
+	                            <productVersion>1.0.0.0</productVersion>
+	                            <txtProductVersion>1.0.0.0</txtProductVersion>
+	                            <productName>${project.name}</productName>
+	                            <companyName>Lattice-CNRS</companyName>
+	                            <internalName>Lattice-CNRS</internalName>
+	                            <originalFilename>hasCode.exe</originalFilename>
+	                        </versionInfo>
+	                    </configuration>
+	                </execution>
+	            </executions>
+        	</plugin> -->
 			<!-- <plugin> <groupId>sh.tak.appbundler</groupId> <artifactId>appbundle-maven-plugin</artifactId> 
 				<version>1.0.4</version> <configuration> <mainClass>visualisation.Lakme2MaltEval</mainClass> 
 				</configuration> <executions> <execution> <phase>package</phase> <goals> 
