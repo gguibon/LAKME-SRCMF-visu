@@ -119,12 +119,12 @@ public class Browser extends Region {
 				.replaceAll("\\{4\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/4.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
 				.replaceAll("\\{5\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/5.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
 				.replaceAll("\\{6\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/6.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{psl\\}","<img src="+getClass().getResource("/html/img/logo-psl.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
-				.replaceAll("\\{lattice\\}","<img src="+getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
-				.replaceAll("\\{enc\\}","<img src="+getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
-				.replaceAll("\\{ens\\}","<img src="+getClass().getResource("/html/img/logo-ens.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
-				.replaceAll("\\{sorbonne\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
-				.replaceAll("\\{sorbonne-nouvelle\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne-nouvelle.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"450\" width=\"500\">")
+				.replaceAll("\\{psl\\}","<img src="+getClass().getResource("/html/img/logo-psl.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
+				.replaceAll("\\{lattice\\}","<img src="+getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
+				.replaceAll("\\{enc\\}","<img src="+getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
+				.replaceAll("\\{ens\\}","<img src="+getClass().getResource("/html/img/logo-ens.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
+				.replaceAll("\\{sorbonne\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
+				.replaceAll("\\{sorbonne-nouvelle\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne-nouvelle.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
 				;
 		engine.loadContent(html);
 		engine.setOnAlert(new EventHandler<WebEvent<String>>() {
@@ -245,8 +245,6 @@ public class Browser extends Region {
 		    final WebHistory history=engine.getHistory();
 		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
 		    int currentIndex=history.getCurrentIndex();
-//		    Out("currentIndex = "+currentIndex);
-//		    Out(entryList.toString().replace("],","]\n"));
 
 		    Platform.runLater(new Runnable() { public void run() { history.go(-1); } });
 		    return entryList.get(currentIndex>0?currentIndex-1:currentIndex).getUrl();
@@ -261,8 +259,6 @@ public class Browser extends Region {
 		    final WebHistory history=engine.getHistory();
 		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
 		    int currentIndex=history.getCurrentIndex();
-//		    Out("currentIndex = "+currentIndex);
-//		    Out(entryList.toString().replace("],","]\n"));
 
 		    Platform.runLater(new Runnable() { public void run() { history.go(1); } });
 		    return entryList.get(currentIndex<entryList.size()-1?currentIndex+1:currentIndex).getUrl();
@@ -330,8 +326,6 @@ public class Browser extends Region {
 					for (int val : values) {
 						if (val > ((mappy.get("form")) + 1)) {
 							listValues.add((val + 2));
-							// listValues.add(val);
-							System.out.println(val + " " + (val + 2));
 						} else {
 							listValues.add(val);
 						}
@@ -355,7 +349,6 @@ public class Browser extends Region {
 			};
 			task.setOnRunning((WorkerStateEvent event) -> {
 				// disable ui
-				System.out.println("start");
 				try {
 					enterLoading();
 				} catch (Exception e) {
@@ -370,7 +363,6 @@ public class Browser extends Region {
 			task.setOnSucceeded((WorkerStateEvent event) -> {
 				// reenable ui
 				// handle succeed
-				System.out.println("exit");
 				exitLoading();
 				growl("success", "Saved ! ", "Data saved to " + file.getPath() + " !");
 			});
@@ -392,10 +384,8 @@ public class Browser extends Region {
 
 		public void setListTags(String sourceId, String targetId, String deleteHeader, String col) throws IOException {
 
-			System.out.println("yop");
 			Element el = engine.getDocument().getElementById(sourceId);
 			String path = el.getTextContent();
-			System.out.println(path);
 
 			String content = Tools.readFile(path);
 			if (deleteHeader.equals("true")) {
@@ -403,17 +393,12 @@ public class Browser extends Region {
 			}
 			content = Format4MaltEval.removeFalseEmptyLines(content);
 			List<String> lines = Tools.StringToList(content);
-			// System.out.println("lines "+ lines.size());
-			// System.out.println("tags " );
-			// String[] ligne = lines.get(2).split("\t");
-			// System.out.println(ligne[12]);
 			List<String> synTags = Tools.ListeNonRedondante(lines, Integer.parseInt(col));
 			StringBuilder sb = new StringBuilder();
 			for (String tag : synTags) {
 				sb.append(String.format("<option>%s</option>", tag));
 			}
 			String html = sb.toString();
-			// System.out.println(html);
 			executejQuery(engine, "$('#" + targetId + "').html('" + html + "');");
 
 		}
@@ -423,63 +408,15 @@ public class Browser extends Region {
 		}
 
 		public void goTo(String url) throws Exception {
-			// Scene scene = new Scene(webView, 500, 600);
-			// StartApp.root1.getChildren().add(new Browser2());
-			System.out.println("yo");
 			String pageContent = new Tools().accessRessourceFile(url);
 			pageContent = pageContent.replaceAll("/", "\\/");
-			System.out.println("yo1\n" + pageContent.replaceAll("\"", "\\\""));
-
+//			System.out.println("yo1\n" + pageContent.replaceAll("\"", "\\\""));
 			engine.loadContent(pageContent);
-			// engine.reload();
-			System.out.println("yo2");
-
 			// engine.load(Browser.class.getResource(url).toExternalForm());
-		}
-
-		public void goToChange() throws Exception {
-			// System.out.println("yo");
-			// String pageContent = new
-			// Tools().accessRessourceFile("/html/change.html");
-			// pageContent = pageContent.replaceAll("\"", "'").replaceAll("'",
-			// "\'").replaceAll("\n", "");
-			// // System.out.println("yo1\n" + pageContent);
-			// executejQuery(engine, "$('#page').html(\"" + pageContent +
-			// "\");");
-
-			// StartApp.root1.getChildren().remove(0);
-			// // System.out.println("yo2");
-			// StartApp.root1.getChildren().set(0, new
-			// Browser("/html/basic.html"));
-			// System.out.println("yop");
-
-			// engine.load(Browser.class.getResource(url).toExternalForm());
-
-			// StartApp.root1.getChildren().remove(0);
-			StartApp.root1.getChildren().add(new Browser("/html/basic.html"));
 		}
 
 		public void goToIndex() throws Exception {
-			// String pageContent = new
-			// Tools().accessRessourceFile("/html/malteval.html");
-			// pageContent = pageContent.replaceAll("\"", "'").replaceAll("'",
-			// "\'").replaceAll("\n", "");
-			// executejQuery(engine, "$('#page').html(\"" + pageContent +
-			// "\");");
-			// initializeJS(engine);
-			// StartApp.root1.getChildren().remove(0);
 			StartApp.root1.getChildren().add(new Browser("/html/srcmf-lakme-viewer.html"));
-			// System.out.println("index");
-		}
-
-		public void goToMaltEval() throws Exception {
-			// StartApp.root1.getChildren().remove(0);
-			StartApp.root1.getChildren().add(new Browser("/html/malteval.html"));
-		}
-
-		public void goToErrorViewer() throws Exception {
-			// StartApp.root1.getChildren().remove(0);
-			StartApp.root1.getChildren().add(new Browser("/html/errorviewer.html"));
 		}
 
 		public void quit() {
@@ -594,7 +531,6 @@ public class Browser extends Region {
 				protected Void call() throws Exception {
 					// makes the long-running API call
 
-					System.out.println("paths :" + path1 + "\n" + path2);
 					try {
 						if (deleteHeader.equals("true")) {
 							path1 = Tools.tempFile("path1", ".temp",
@@ -678,7 +614,6 @@ public class Browser extends Region {
 		 * @throws Exception
 		 */
 		public void ErrorViewer(String deleteHeader, String tag, String scoresPos, String scoresSyn) throws Exception {
-			System.out.println("deleteheader=" + deleteHeader);
 			Element el = engine.getDocument().getElementById("alertfcerror");
 			path1 = el.getTextContent();
 
@@ -784,7 +719,6 @@ public class Browser extends Region {
 			};
 			task.setOnRunning((WorkerStateEvent event) -> {
 				// disable ui
-				System.out.println("start");
 				try {
 					enterLoading();
 				} catch (Exception e) {
@@ -817,9 +751,7 @@ public class Browser extends Region {
 				executejQuery(engine, "$('#synscorestab').html('" + res1 + "');");
 				executejQuery(engine, "$('#posscorestab').html('" + res2 + "');");
 				executejQuery(engine, "$('.nav-tabs a[href=\"#tabChartsErrors\"]').tab('show');");
-				System.out.println(res2);
 				growl("success", "Scores Updated", "You can access scores in its tab.");
-				System.out.println("exit");
 				exitLoading();
 
 			});
@@ -898,11 +830,9 @@ public class Browser extends Region {
 		}
 
 		public void enterLoading() throws Exception {
-			System.out.println("start");
 
 			String pathGif = Browser.class.getResource("/html/img/loading.gif").toExternalForm();
 			pathGif = pathGif.replaceAll("file:/", "file:///");
-			System.out.println(pathGif);
 			executejQuery(engine,
 					"$.blockUI({" + "css: {" + "border: 'none'," + "padding: '15px'," + "backgroundColor: '#000',"
 							+ "'-webkit-border-radius': '10px'," + "'-moz-border-radius': '10px'," + "opacity: .4,"
@@ -1041,28 +971,13 @@ public class Browser extends Region {
 		}
 
 		public void openPdf(String path) throws Exception {
-			// with PDFRenderer (does not seem to work)
-			// final PDFViewer pdfViewer = new PDFViewer(true);
-			// pdfViewer.openFile(new URL(pdf));
-			// String pathPdf =
-			// "/home/gael/workspacefx/SRCMF-errorViewer/src/main/resources/html/test.pdf";
-			// String pathPdf =
-			// Browser.class.getResource("/html/test.pdf").toExternalForm();
-			// .replace("file:", "");
 
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
 				InputStream is = getClass().getResourceAsStream(path);
-				// byte[] data = new byte[is.available()];
-				// is.read(data);
-				// is.close();
 				String tempFile = "file";
 				File temp = File.createTempFile(tempFile, ".pdf");
-				// FileOutputStream fos = new FileOutputStream(temp);
-				// fos.write(data);
-				// fos.flush();
-				// fos.close();
-				String pathPdf = getClass().getResource("/html/test.pdf").toExternalForm().replaceFirst("file:", "");
+//				String pathPdf = getClass().getResource("/html/test.pdf").toExternalForm().replaceFirst("file:", "");
 
 				Thread t = new Thread("Pdf Thread") {
 					public void run() {
@@ -1079,9 +994,6 @@ public class Browser extends Region {
 							is.close();
 
 							desktop.open(temp);
-							System.out.println(temp.getAbsolutePath());
-
-							// desktop.open(new File(pathPdf));
 						} catch (Exception e) {
 							e.printStackTrace();
 							Alert alert = new Alert(AlertType.ERROR);
@@ -1461,7 +1373,12 @@ public class Browser extends Region {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("About");
 			alert.setHeaderText("Author");
-			alert.setContentText("Gaël Guibon\n\n" + "gael.guibon@gmail.com\n\n");
+			alert.setContentText("Gaël Guibon\n\n" 
+					+ "Lattice CNRS"
+					+ "\n"
+					+ "http://www.lattice.cnrs.fr/"
+					+ "\n\n"
+					+ "gael.guibon@gmail.com\n\n");
 			alert.show();
 			
 		}
