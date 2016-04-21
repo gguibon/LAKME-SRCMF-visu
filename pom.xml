@@ -4,7 +4,7 @@
 
 	<groupId>cnrs.lattice.srcmf.lakme</groupId>
 	<artifactId>visu</artifactId>
-	<version>0.8.1</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>LAKME-SRCMF-visu</name>
@@ -151,13 +151,14 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>8.1.4</version>
 				<configuration>
-					<mainClass>visualisation.Lakme2MaltEval</mainClass>
+					<mainClass>cnrs.lattice.srcmf.view.StartApp</mainClass>
 					<verbose>true</verbose>
 					<vendor>Lattice-CNRS</vendor>
-					<nativeReleaseVersion>1.2</nativeReleaseVersion>
+					<nativeReleaseVersion>1.0.0</nativeReleaseVersion>
 					<needShortcut>true</needShortcut>
 					<needMenu>true</needMenu>
-					<appName>lakmeVisu</appName>
+					<appName>LAKME-SRCMF-visu</appName>
+					<deployDir>/home/gael/workspacefx/LAKME-SRCMF-visu/src/main/deploy</deployDir>
 					<skipNativeLauncherWorkaround124>true</skipNativeLauncherWorkaround124>
 				</configuration>
 			</plugin>

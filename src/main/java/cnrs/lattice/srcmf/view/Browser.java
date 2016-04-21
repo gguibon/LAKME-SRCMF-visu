@@ -2,7 +2,6 @@ package cnrs.lattice.srcmf.view;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +15,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Stopwatch;
 
 import cnrs.lattice.srcmf.beans.MaltFormat;
 import cnrs.lattice.srcmf.engines.DataProcess;
@@ -60,7 +58,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import netscape.javascript.JSObject;
-import se.vxu.msi.malteval.MaltEvalAPI;
 import se.vxu.msi.malteval.MaltEvalConsole;
 
 public class Browser extends Region {
@@ -113,12 +110,6 @@ public class Browser extends Region {
 				.replaceAll("\\{window\\}","<img src="+getClass().getResource("/html/img/glyphicons/dark/open-computer-window.png").toExternalForm()+" height=\"24\" width=\"24\">")
 				.replaceAll("\\{letter\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/letter.png").toExternalForm()+" height=\"24\" width=\"24\">")
 				//home
-				.replaceAll("\\{1\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/1.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{2\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/2.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{3\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/3.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{4\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/4.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{5\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/5.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
-				.replaceAll("\\{6\\}","<img src="+getClass().getResource("/html/startbootstrap-creative-1.0.2/img/portfolio/6.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\">")
 				.replaceAll("\\{psl\\}","<img src="+getClass().getResource("/html/img/logo-psl.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
 				.replaceAll("\\{lattice\\}","<img src="+getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
 				.replaceAll("\\{enc\\}","<img src="+getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
@@ -1259,7 +1250,7 @@ public class Browser extends Region {
 		public void editSent(String id) throws IOException, Exception {
 //			sentences = DataProcess.stockSentences(Corpus.getSentences(path1), maltFormat.map);
 			String content2inject = sentences.get(Integer.parseInt(id)).toMalt();
-			arboratorLocal(content2inject.replaceAll("'", "&apos;"), id);
+			arborator(content2inject.replaceAll("'", "&apos;"), id);
 		}
 		
 		/**
