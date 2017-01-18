@@ -36,6 +36,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -75,49 +76,83 @@ public class Browser extends Region {
 
 	public Browser(String url) throws Exception {
 		webView.setContextMenuEnabled(false);
+		webView.setCache(true);
+		webView.setCacheHint(CacheHint.SPEED);
 		createContextMenu(webView);
-		
+		engine.setUserAgent("AppleWebKit/537.44");
 		Tools tool = new Tools();
 		String html = tool.accessRessourceFile(url);
 
 		StringBuilder sb = new StringBuilder();
-//		sb.append(tool.accessRessourceFile("/html/css/bootstrap.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-theme.min.css") + "\n");
-		sb.append(tool.accessRessourceFile("/html/css/bootstrap-united.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-paper.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-spacelab.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/bootstrap-readable.min.css") + "\n");
+		sb.append(tool.accessRessourceFile("/html/css/bootstrap.min.css") + "\n");
 		sb.append(tool.accessRessourceFile("/html/css/bootstrap-toggle.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/font-awesome.css") + "\n");
 		sb.append(tool.accessRessourceFile("/html/css/srcmf-error.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/css/jasny-bootstrap.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/startbootstrap-creative-1.0.2/css/animate.min.css") + "\n");
-//		sb.append(tool.accessRessourceFile("/html/startbootstrap-creative-1.0.2/css/creative.css") + "\n");
 		String css = sb.toString();
-		html = html.replace("{csshere}", css)
-				.replaceAll("\\{upload\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/upload-arrow-with-bar.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{download\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/download-arrow-with-bar.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{question\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/question-mark.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{refresh\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/refresh-curve-arrows.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{reload\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/reload-arrow.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{settings\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/settings-bars.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{power\\}","<img src="+getClass().getResource("/html/img/glyphicons/color/power-button-off-red.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{book\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/hardbound-book-variant.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{delete\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/rubbish-bin.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{play\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/press-play-button.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{grade\\}","<img src="+getClass().getResource("/html/img/glyphicons/dark/a-plus-mark.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{arc\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/curved-downward-arrow.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{window\\}","<img src="+getClass().getResource("/html/img/glyphicons/dark/open-computer-window.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				.replaceAll("\\{letter\\}","<img src="+getClass().getResource("/html/img/glyphicons/light/letter.png").toExternalForm()+" height=\"24\" width=\"24\">")
-				//home
-				.replaceAll("\\{psl\\}","<img src="+getClass().getResource("/html/img/logo-psl.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				.replaceAll("\\{lattice\\}","<img src="+getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				.replaceAll("\\{enc\\}","<img src="+getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				.replaceAll("\\{ens\\}","<img src="+getClass().getResource("/html/img/logo-ens.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				.replaceAll("\\{sorbonne\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne.jpg").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				.replaceAll("\\{sorbonne-nouvelle\\}","<img src="+getClass().getResource("/html/img/logo-sorbonne-nouvelle.png").toExternalForm()+" class=\"img-responsive\" alt=\"\" height=\"250\" width=\"300\">")
-				;
+		html = html
+				.replace("{csshere}",
+						css)
+				.replaceAll("\\{upload\\}",
+						"<img src="
+								+ getClass().getResource("/html/img/glyphicons/upload-arrow-with-bar.png")
+										.toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{download\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/download-arrow-with-bar.png")
+								.toExternalForm() + " height=\"24\" width=\"24\">")
+				.replaceAll("\\{question\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/question-mark.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{refresh\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/refresh.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{reload\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/reload-arrow.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{power\\}",
+						"<img src="
+								+ getClass().getResource("/html/img/glyphicons/power-button-off.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{delete\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/rubbish-bin.png").toExternalForm()
+								+ " height=\"15\" width=\"15\">")
+				.replaceAll("\\{play\\}",
+						"<img src="
+								+ getClass().getResource("/html/img/glyphicons/press-play-button.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{grade\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/mark.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{window\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/open-computer-window.png")
+								.toExternalForm() + " height=\"24\" width=\"24\">")
+				.replaceAll("\\{letter\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/letter.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				.replaceAll("\\{book\\}",
+						"<img src=" + getClass().getResource("/html/img/glyphicons/book.png").toExternalForm()
+								+ " height=\"24\" width=\"24\">")
+				// home
+				.replaceAll("\\{psl\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-psl.png").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">")
+				.replaceAll("\\{lattice\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-lattice.jpg").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">")
+				.replaceAll("\\{enc\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-enc.jpg").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">")
+				.replaceAll("\\{ens\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-ens.jpg").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">")
+				.replaceAll("\\{sorbonne\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-sorbonne.jpg").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">")
+				.replaceAll("\\{sorbonne-nouvelle\\}",
+						"<img src=" + getClass().getResource("/html/img/logo-sorbonne-nouvelle.png").toExternalForm()
+								+ " class=\"img-responsive\" alt=\"\" height=\"150\" width=\"200\">");
 		engine.loadContent(html);
+		engine.reload();
+//		engine.load(getClass().getResource("/html/img/glyphicons/open-computer-window.svg").toExternalForm());
 		engine.setOnAlert(new EventHandler<WebEvent<String>>() {
 			@Override
 			public void handle(WebEvent<String> event) {
@@ -179,9 +214,9 @@ public class Browser extends Region {
 	}
 
 	private void createContextMenu(WebView webView) {
-        ContextMenu contextMenu = new ContextMenu();
-        MenuItem goHome = new MenuItem("Go back to Home");
-        goHome.setOnAction(e -> {
+		ContextMenu contextMenu = new ContextMenu();
+		MenuItem goHome = new MenuItem("Go back to Home");
+		goHome.setOnAction(e -> {
 			try {
 				new Call().goToIndex();
 			} catch (Exception e1) {
@@ -189,24 +224,23 @@ public class Browser extends Region {
 				e1.printStackTrace();
 			}
 		});
-        MenuItem reload = new MenuItem("Reload Page");
-        reload.setOnAction(e -> webView.getEngine().reload());
-        MenuItem goPreviousPage = new MenuItem("Previous Page");
-        goPreviousPage.setOnAction(e -> new Call().goBack());
-        MenuItem goNextPage = new MenuItem("Next Page");
-        goNextPage.setOnAction(e -> new Call().goForward());
-        contextMenu.getItems().addAll(goHome, reload, goPreviousPage, goNextPage);
+		MenuItem reload = new MenuItem("Reload Page");
+		reload.setOnAction(e -> webView.getEngine().reload());
+		MenuItem goPreviousPage = new MenuItem("Previous Page");
+		goPreviousPage.setOnAction(e -> new Call().goBack());
+		MenuItem goNextPage = new MenuItem("Next Page");
+		goNextPage.setOnAction(e -> new Call().goForward());
+		contextMenu.getItems().addAll(goHome, reload, goPreviousPage, goNextPage);
 
-        webView.setOnMousePressed(e -> {
-            if (e.getButton() == MouseButton.SECONDARY) {
-                contextMenu.show(webView, e.getScreenX(), e.getScreenY());
-            } else {
-                contextMenu.hide();
-            }
-        });
-    }
+		webView.setOnMousePressed(e -> {
+			if (e.getButton() == MouseButton.SECONDARY) {
+				contextMenu.show(webView, e.getScreenX(), e.getScreenY());
+			} else {
+				contextMenu.hide();
+			}
+		});
+	}
 
-	
 	/**
 	 * Class to receive call events. ex: onclick="call.method()"
 	 * 
@@ -224,37 +258,43 @@ public class Browser extends Region {
 		String var3 = "";
 		List<Tag> posTagsScores = new ArrayList<Tag>();
 		List<Tag> synTagsScores = new ArrayList<Tag>();
-		
-		
-		
+
 		/**
 		 * use webHistory to go back to the previous page
+		 * 
 		 * @return
 		 */
-		public String goBack()
-		  {    
-		    final WebHistory history=engine.getHistory();
-		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
-		    int currentIndex=history.getCurrentIndex();
+		public String goBack() {
+			final WebHistory history = engine.getHistory();
+			ObservableList<WebHistory.Entry> entryList = history.getEntries();
+			int currentIndex = history.getCurrentIndex();
 
-		    Platform.runLater(new Runnable() { public void run() { history.go(-1); } });
-		    return entryList.get(currentIndex>0?currentIndex-1:currentIndex).getUrl();
-		  }
-		
+			Platform.runLater(new Runnable() {
+				public void run() {
+					history.go(-1);
+				}
+			});
+			return entryList.get(currentIndex > 0 ? currentIndex - 1 : currentIndex).getUrl();
+		}
+
 		/**
 		 * use webHistory to go forward to the next page
+		 * 
 		 * @return
 		 */
-		  public String goForward()
-		  {    
-		    final WebHistory history=engine.getHistory();
-		    ObservableList<WebHistory.Entry> entryList=history.getEntries();
-		    int currentIndex=history.getCurrentIndex();
+		public String goForward() {
+			final WebHistory history = engine.getHistory();
+			ObservableList<WebHistory.Entry> entryList = history.getEntries();
+			int currentIndex = history.getCurrentIndex();
 
-		    Platform.runLater(new Runnable() { public void run() { history.go(1); } });
-		    return entryList.get(currentIndex<entryList.size()-1?currentIndex+1:currentIndex).getUrl();
-		  }
-		
+			Platform.runLater(new Runnable() {
+				public void run() {
+					history.go(1);
+				}
+			});
+			return entryList.get(currentIndex < entryList.size() - 1 ? currentIndex + 1 : currentIndex).getUrl();
+		}
+
 		public void fc(String id) {
 			File currentDir = new File(System.getProperty("user.dir")); // System.getProperty("user.dir")
 			fileChooser.setTitle("Select a file");
@@ -401,7 +441,8 @@ public class Browser extends Region {
 		public void goTo(String url) throws Exception {
 			String pageContent = new Tools().accessRessourceFile(url);
 			pageContent = pageContent.replaceAll("/", "\\/");
-//			System.out.println("yo1\n" + pageContent.replaceAll("\"", "\\\""));
+			// System.out.println("yo1\n" + pageContent.replaceAll("\"",
+			// "\\\""));
 			engine.loadContent(pageContent);
 			// engine.load(Browser.class.getResource(url).toExternalForm());
 		}
@@ -422,51 +463,91 @@ public class Browser extends Region {
 		public void setId(int id) {
 			maltFormat.setId(id);
 			maltFormat.map.put("id", id);
+			String entry = "id";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setForm(int form) {
 			maltFormat.setForm(form);
 			maltFormat.map.put("form", form);
+			String entry = "form";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ form + "\";" + "}");
 		}
 
 		public void setLemma(int id) {
 			maltFormat.setLemma(id);
 			maltFormat.map.put("lemma", id);
+			String entry = "lemma";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setCPostag(int id) {
 			maltFormat.setCPostag(id);
 			maltFormat.map.put("cpostag", id);
+			String entry = "cpostag";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setPostag(int id) {
 			maltFormat.setPostag(id);
 			maltFormat.map.put("postag", id);
+			String entry = "postag";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setFeats(int id) {
 			maltFormat.setFeats(id);
 			maltFormat.map.put("feats", id);
+			String entry = "feats";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setHead(int id) {
 			maltFormat.setHead(id);
 			maltFormat.map.put("head", id);
+			String entry = "head";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setDeprel(int id) {
 			maltFormat.setDeprel(id);
 			maltFormat.map.put("deprel", id);
+			String entry = "deprel";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setPHead(int id) {
 			maltFormat.setPHead(id);
 			maltFormat.map.put("phead", id);
+			String entry = "phead";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setPDeprel(int id) {
 			maltFormat.setPDeprel(id);
 			maltFormat.map.put("pdeprel", id);
+			String entry = "pdeprel";
+			engine.executeScript("var nbnames = document.getElementsByName(\"" + entry + "\").length;"
+					+ "for (i = 0; i < nbnames; i++) { " + "document.getElementsByName(\"" + entry + "\")[i].value = \""
+					+ id + "\";" + "}");
 		}
 
 		public void setPresetVal(int[] values) {
@@ -512,10 +593,21 @@ public class Browser extends Region {
 			}
 		}
 
-		public void tsv2MaltEval(String deleteHeader) {
+		public void tsv2MaltEval(String deleteHeader, String id, String form, String lemma, String cpostag,
+				String postag, String feats, String head, String deprel, String phead, String pdeprel) {
 
 			path1 = engine.getDocument().getElementById("alertfc1").getTextContent();
 			path2 = engine.getDocument().getElementById("alertfc2").getTextContent();
+			setId(Integer.parseInt(id));
+			setForm(Integer.parseInt(form));
+			setLemma(Integer.parseInt(lemma));
+			setCPostag(Integer.parseInt(cpostag));
+			setPostag(Integer.parseInt(postag));
+			setFeats(Integer.parseInt(feats));
+			setHead(Integer.parseInt(head));
+			setDeprel(Integer.parseInt(deprel));
+			setPHead(Integer.parseInt(phead));
+			setPDeprel(Integer.parseInt(pdeprel));
 
 			Task<Void> task = new Task<Void>() {
 				@Override
@@ -604,23 +696,34 @@ public class Browser extends Region {
 		 * @param tag
 		 * @throws Exception
 		 */
-		public void ErrorViewer(String deleteHeader, String tag, String scoresPos, String scoresSyn) throws Exception {
+		public void ErrorViewer(String deleteHeader, String tag, String scoresPos, String scoresSyn, String id, String form, String lemma, String cpostag,
+				String postag, String feats, String head, String deprel, String phead, String pdeprel) throws Exception {
 			Element el = engine.getDocument().getElementById("alertfcerror");
 			path1 = el.getTextContent();
+			setId(Integer.parseInt(id));
+			setForm(Integer.parseInt(form));
+			setLemma(Integer.parseInt(lemma));
+			setCPostag(Integer.parseInt(cpostag));
+			setPostag(Integer.parseInt(postag));
+			setFeats(Integer.parseInt(feats));
+			setHead(Integer.parseInt(head));
+			setDeprel(Integer.parseInt(deprel));
+			setPHead(Integer.parseInt(phead));
+			setPDeprel(Integer.parseInt(pdeprel));
 
 			Task<Void> task = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 					// makes the long-running API call
-//					System.out.println(tag + " " + deleteHeader);
-					
+					// System.out.println(tag + " " + deleteHeader);
+
 					if (deleteHeader.equals("true")) {
 						path1 = Tools.tempFile("path1", ".temp",
 								Format4MaltEval.removeFirstLine(Tools.readFile(path1)));
 					}
-				
+
 					String malt = Format4MaltEval.convert2malt(maltFormat.map, path1);
-					
+
 					malt = Fixer.fixSyntaxDuplicataAndAnnotatorTag(malt, 6);
 					malt = Fixer.fixSyntaxDuplicataAndAnnotatorTag(malt, 8);
 
@@ -638,7 +741,7 @@ public class Browser extends Region {
 								StringBuilder sb = new StringBuilder();
 								sb.append(
 										"<div style=\"overflow-y: scroll; height:400px;\"><table border=\"0\" style=\"width:100%\" "
-										+ "class=\"table table-condensed table-responsive\"> "
+												+ "class=\"table table-condensed table-responsive\"> "
 												+ "<th>Tag</th><th>Correct Tags</th>" + "<tbody>");
 								for (String line : lines) {
 									String[] cols = line.split("\t");
@@ -647,7 +750,8 @@ public class Browser extends Region {
 									tag.setScore(Double.parseDouble(
 											cols[1].replaceAll("%", "").replaceAll(" ", "").replaceAll(",", ".")));
 									synTagsScores.add(tag);
-									sb.append("<tr class=\"hoveractive\"><td>" + cols[0] + "</td><td>" + cols[1] + "</td></tr>");
+									sb.append("<tr class=\"hoveractive\"><td>" + cols[0] + "</td><td>" + cols[1]
+											+ "</td></tr>");
 								}
 								sb.append("</tbody></table></div>");
 								res1 = sb.toString();
@@ -667,7 +771,7 @@ public class Browser extends Region {
 								StringBuilder posSb = new StringBuilder();
 								posSb.append(
 										"<div style=\"overflow-y: scroll; height:400px;\"><table border=\"0\" style=\"width:100%\" "
-										+ "class=\"table table-condensed table-responsive\"> "
+												+ "class=\"table table-condensed table-responsive\"> "
 												+ "<th>PoS tag</th><th>Correct PoS tags</th>" + "<tbody>");
 								for (String line : linesPos) {
 									String[] cols = line.split("\t");
@@ -675,8 +779,8 @@ public class Browser extends Region {
 									tag.setName(cols[0]);
 									tag.setScore(Integer.parseInt(cols[1].replaceAll("%", "").replaceAll(" ", "")));
 									posTagsScores.add(tag);
-									posSb.append("<tr class=\"hoveractive\"><td>" + cols[0] + "</td>" + "<td>" + cols[1] + " %" + "</td>"
-											+ "<td>" + "</tr>");
+									posSb.append("<tr class=\"hoveractive\"><td>" + cols[0] + "</td>" + "<td>" + cols[1]
+											+ " %" + "</td>" + "<td>" + "</tr>");
 								}
 								posSb.append("</tbody></table></div>");
 								res2 = posSb.toString();
@@ -687,15 +791,6 @@ public class Browser extends Region {
 						}
 					};
 
-					// System.out.println(malt);
-					/*
-					 * Thread t3 = new Thread("maltEval Thread") { public void
-					 * run() { try { String[] paths =
-					 * Error.isolateLasError(Tools.tempFile("malt3", ".malt",
-					 * var3), tag); // Error.startMaltEval(paths[3], paths[2]);
-					 * startMaltEval(paths[3], paths[2]); } catch (Exception e)
-					 * { e.printStackTrace(); } } }; t3.start(); t3.join();
-					 */
 					if (scoresSyn.equals("true")) {
 						t1.start();
 						t1.join();
@@ -764,12 +859,12 @@ public class Browser extends Region {
 		}
 
 		public void startMaltEval(String str1, String str2) {
-			
+
 			Thread t0 = new Thread("maltEval only Thread") {
 				public void run() {
 					try {
-						//Error.startMaltEval(str1, str2);
-						String[] arguments = {"-s",str1,"-g",str2,"-v","1"};
+						// Error.startMaltEval(str1, str2);
+						String[] arguments = { "-s", str1, "-g", str2, "-v", "1" };
 						MaltEvalConsole.main(arguments);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -777,15 +872,15 @@ public class Browser extends Region {
 				}
 			};
 			t0.setDaemon(true);
-			
+
 			Task<Void> taskMaltEval = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 					// makes the long-running API call
-					
+
 					t0.start();
 					t0.join();
-					
+
 					return null;
 				}
 			};
@@ -794,7 +889,9 @@ public class Browser extends Region {
 				System.out.println("start");
 				try {
 					enterLoading();
-				} catch (Exception e) {	e.printStackTrace();}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			});
 			taskMaltEval.setOnCancelled((WorkerStateEvent event) -> {
 				// reenable ui
@@ -968,7 +1065,9 @@ public class Browser extends Region {
 				InputStream is = getClass().getResourceAsStream(path);
 				String tempFile = "file";
 				File temp = File.createTempFile(tempFile, ".pdf");
-//				String pathPdf = getClass().getResource("/html/test.pdf").toExternalForm().replaceFirst("file:", "");
+				// String pathPdf =
+				// getClass().getResource("/html/test.pdf").toExternalForm().replaceFirst("file:",
+				// "");
 
 				Thread t = new Thread("Pdf Thread") {
 					public void run() {
@@ -1029,12 +1128,16 @@ public class Browser extends Region {
 				e.printStackTrace();
 			}
 		}
-		
+
 		/**
-		 * launch arborator browser with internet connection to the arborator 
+		 * launch arborator browser with internet connection to the arborator
 		 * quick access page
-		 * @param content2inject The content to inject (i.e. the sentence)
-		 * @param id2retrieve (the sentence id in the data, to change in case of modifications)
+		 * 
+		 * @param content2inject
+		 *            The content to inject (i.e. the sentence)
+		 * @param id2retrieve
+		 *            (the sentence id in the data, to change in case of
+		 *            modifications)
 		 * @deprecated better use the arboratorLocal method
 		 */
 		public void arborator(String content2inject, String id2retrieve) {
@@ -1098,11 +1201,14 @@ public class Browser extends Region {
 			t.start();
 		}
 
-		
 		/**
 		 * launch arborator browser locally
-		 * @param content2inject The content to inject (i.e. the sentence)
-		 * @param id2retrieve (the sentence id in the data, to change in case of modifications)
+		 * 
+		 * @param content2inject
+		 *            The content to inject (i.e. the sentence)
+		 * @param id2retrieve
+		 *            (the sentence id in the data, to change in case of
+		 *            modifications)
 		 */
 		public void arboratorLocal(String content2inject, String id2retrieve) {
 
@@ -1131,7 +1237,9 @@ public class Browser extends Region {
 			task.setOnSucceeded((WorkerStateEvent event) -> {
 				// reenable ui
 				// handle succeed
-				ArboratorQuickAccessLocal arbo = new ArboratorQuickAccessLocal();
+				// ArboratorQuickAccessLocal arbo = new
+				// ArboratorQuickAccessLocal();
+				Lakme2Arborator arbo = new Lakme2Arborator();
 				arbo.setContent(content2inject, id2retrieve);
 
 				try {
@@ -1164,32 +1272,41 @@ public class Browser extends Region {
 			t.setDaemon(true);
 			t.start();
 		}
-		
-		
+
 		/**
 		 * refresh the sentences from the file, and show them in a table view
 		 * 
 		 * @param deleteHeader
 		 * @throws Exception
 		 */
-		public void reloadSentences(String deleteHeader) throws Exception {
+		public void reloadSentences(String deleteHeader, String id, String form, String lemma, String cpostag,
+				String postag, String feats, String head, String deprel, String phead, String pdeprel)
+				throws Exception {
 			Element el = engine.getDocument().getElementById("alertfcarbo");
 			path1 = el.getTextContent();
+			setId(Integer.parseInt(id));
+			setForm(Integer.parseInt(form));
+			setLemma(Integer.parseInt(lemma));
+			setCPostag(Integer.parseInt(cpostag));
+			setPostag(Integer.parseInt(postag));
+			setFeats(Integer.parseInt(feats));
+			setHead(Integer.parseInt(head));
+			setDeprel(Integer.parseInt(deprel));
+			setPHead(Integer.parseInt(phead));
+			setPDeprel(Integer.parseInt(pdeprel));
 
 			Task<Void> task = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 					// makes the long-running API call
-					
+
 					if (deleteHeader.equals("true")) {
 						path1 = Tools.tempFile("path1", ".temp",
 								Format4MaltEval.removeFirstLine(Tools.readFile(path1)));
 					}
-					
+
 					path1 = Tools.tempFile("path1", ".temp",
 							Format4MaltEval.removeFalseEmptyLines(Tools.readFile(path1)));
-					
-					
 					sentences = DataProcess.stockSentences(Corpus.getSentences(path1), maltFormat.map);
 					var1 = DataProcess.getSentencesListView(sentences);
 
@@ -1211,14 +1328,9 @@ public class Browser extends Region {
 			task.setOnSucceeded((WorkerStateEvent event) -> {
 				// reenable ui
 				// handle succeed
-				// executejQuery(engine, "$('#sentencesListView').html('"+
-				// "<button id=\"sent3\" type=\"button\"
-				// onclick=\"call.print(\'yahoo\')\" class=\"btn btn-info
-				// btn-xl\" >View</button>" + "');");
 				executejQuery(engine, "$('#sentencesListView').html('" + var1 + "');");
 				growl("success", "Sentences updated", "You can see them below.");
 				var1 = "";
-				System.out.println("exit");
 				exitLoading();
 
 			});
@@ -1248,30 +1360,32 @@ public class Browser extends Region {
 		 * @throws Exception
 		 */
 		public void editSent(String id) throws IOException, Exception {
-//			sentences = DataProcess.stockSentences(Corpus.getSentences(path1), maltFormat.map);
+			// sentences =
+			// DataProcess.stockSentences(Corpus.getSentences(path1),
+			// maltFormat.map);
 			String content2inject = sentences.get(Integer.parseInt(id)).toMalt();
-			arborator(content2inject.replaceAll("'", "&apos;"), id);
+			arboratorLocal(content2inject.replaceAll("'", "&apos;"), id);
 		}
-		
+
 		/**
 		 * remove all sentences (will need to reload from file again again)
 		 */
-		public void deleteSentences(){
+		public void deleteSentences() {
 			sentences = new ArrayList<Sentence>();
 			executejQuery(engine, "$('#sentencesListView').html('');");
 		}
-		
+
 		/**
-		 * show a save file chooser and will write the current sentences (the list) to the
-		 * selected file in the same format as it was in entry.
+		 * show a save file chooser and will write the current sentences (the
+		 * list) to the selected file in the same format as it was in entry.
+		 * 
 		 * @throws Exception
 		 */
-		public void exportChanges() throws Exception {
+		public void exportChanges(String deleteHeader) throws Exception {
 
-			
 			Element el = engine.getDocument().getElementById("alertfcarbo");
 			path1 = el.getTextContent();
-			
+
 			FileChooser fileChooser = new FileChooser();
 
 			// Define extension filter
@@ -1282,80 +1396,93 @@ public class Browser extends Region {
 			// Show save file dialog
 			fileChooser.setTitle("Define your exported file !");
 			File file = fileChooser.showSaveDialog(stage);
-			
-			if (file != null) {
-			
-			Task<Void> taskMaltEval = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
-					// makes the long-running API call
-					int headCol = maltFormat.map.get("head");
-					int deprelCol = maltFormat.map.get("deprel");
 
-					
+			if (file != null) {
+
+				Task<Void> taskMaltEval = new Task<Void>() {
+					@Override
+					protected Void call() throws Exception {
+						// makes the long-running API call
+						int headCol = maltFormat.map.get("head");
+						int deprelCol = maltFormat.map.get("deprel");
+
 						String maltChanged = DataProcess.getSentencesMalt(sentences);
 						List<String> originalText = Tools.path2liste(path1);
 						List<String> changedText = Tools.StringToList(maltChanged);
-//						System.out.println("ori " + originalText.size() + "\t new " + changedText.size());
 
 						StringBuilder sb = new StringBuilder();
 						Joiner joinerTab = Joiner.on("\t");
+
 						for (int i = 0; i < originalText.size(); i++) {
-							if (originalText.get(i).length() == 0) {
-								sb.append("\n");
-								continue;
+							int iOriginalText = i;
+							if (deleteHeader.equals("true"))
+								iOriginalText = i + 1;
+							if (iOriginalText < originalText.size()) {
+								if (originalText.get(iOriginalText).length() == 0) {
+									sb.append("\n");
+									continue;
+								}
 							}
-							String[] colsOrigin = originalText.get(i).split("\t");
+							if (!(iOriginalText < originalText.size()))
+								continue;
+
+							String[] colsOrigin = originalText.get(iOriginalText).split("\t");
 							String[] colsNew = changedText.get(i).split("\t");
+
+							System.out.println(colsOrigin.length + " " + colsNew.length);
+							System.out.println(originalText.get(iOriginalText));
+							System.out.println(changedText.get(i));
+
 							colsOrigin[headCol] = colsNew[6];
 							colsOrigin[deprelCol] = colsNew[7];
+
 							sb.append(joinerTab.join(colsOrigin) + "\n");
 						}
-						Tools.ecrire(file.getAbsolutePath(), sb.toString());
-					
+						// }
+						if (deleteHeader.equals("true")) {
+							Tools.ecrire(file.getAbsolutePath(),
+									String.format("%s\n%s", originalText.get(0), sb.toString()));
+						} else {
+							Tools.ecrire(file.getAbsolutePath(), sb.toString());
+						}
 
-					return null;
-				}
-			};
-			taskMaltEval.setOnRunning((WorkerStateEvent event) -> {
-				// disable ui
-				try {
-					enterLoading();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			});
-			taskMaltEval.setOnCancelled((WorkerStateEvent event) -> {
-				// reenable ui
-				// handle cancel
-				exitLoading();
-			});
-			taskMaltEval.setOnSucceeded((WorkerStateEvent event) -> {
-				// reenable ui
-				// handle succeed
-				exitLoading();
-				growl("success", "Success", "Changes written in\n" + file.getAbsolutePath());
-			});
+						return null;
+					}
+				};
+				taskMaltEval.setOnRunning((WorkerStateEvent event) -> {
+					// disable ui
+					try {
+						enterLoading();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				});
+				taskMaltEval.setOnCancelled((WorkerStateEvent event) -> {
+					// reenable ui
+					// handle cancel
+					exitLoading();
+				});
+				taskMaltEval.setOnSucceeded((WorkerStateEvent event) -> {
+					// reenable ui
+					// handle succeed
+					exitLoading();
+					growl("success", "Success", "Changes written in\n" + file.getAbsolutePath());
+				});
 
-			taskMaltEval.setOnFailed((WorkerStateEvent event) -> {
-				// reenable ui
-				// handle failed task e.g.:
-				System.err.println("Oops, Error:");
-				taskMaltEval.getException().printStackTrace(System.err);
-			});
-			Thread t = new Thread(taskMaltEval);
-			// thread shouldn't prevent program shutdown
-			t.setDaemon(true);
-			t.start();
+				taskMaltEval.setOnFailed((WorkerStateEvent event) -> {
+					// reenable ui
+					// handle failed task e.g.:
+					System.err.println("Oops, Error:");
+					taskMaltEval.getException().printStackTrace(System.err);
+				});
+				Thread t = new Thread(taskMaltEval);
+				// thread shouldn't prevent program shutdown
+				t.setDaemon(true);
+				t.start();
 			}
-			
-			
 
-			}
-
-			
-		
+		}
 
 		/**
 		 * simple javafx alert to inform about the author
@@ -1364,14 +1491,10 @@ public class Browser extends Region {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("About");
 			alert.setHeaderText("Author");
-			alert.setContentText("Gaël Guibon\n\n" 
-					+ "Lattice CNRS"
-					+ "\n"
-					+ "http://www.lattice.cnrs.fr/"
-					+ "\n\n"
+			alert.setContentText("Gaël Guibon\n\n" + "Lattice CNRS" + "\n" + "http://www.lattice.cnrs.fr/" + "\n\n"
 					+ "gael.guibon@gmail.com\n\n");
 			alert.show();
-			
+
 		}
 
 	}
@@ -1432,19 +1555,8 @@ public class Browser extends Region {
 		engine.executeScript(script);
 		script = new Tools().accessRessourceFile("/html/js/bootstrap-toggle.min.js");
 		engine.executeScript(script);
-		// script = new
-		// Tools().accessRessourceFile("/html/js/jasny-bootstrap.min.js");
-		// engine.executeScript(script);
 		script = new Tools().accessRessourceFile("/html/js/jquery.blockUI.js");
 		executejQuery(engine, DEFAULT_JQUERY_MIN_VERSION, JQUERY_LOCATION, script);
-//		script = new Tools().accessRessourceFile("/html/js/jquery.slidereveal.min.js");
-//		executejQuery(engine, DEFAULT_JQUERY_MIN_VERSION, JQUERY_LOCATION, script);
-//		script = new Tools().accessRessourceFile("/html/js/loader.js");
-//		engine.executeScript(script);
-//		script = new Tools().accessRessourceFile("/html/js/jquery.media.js");
-//		engine.executeScript(script);
-		// script = new Tools().accessRessourceFile("/html/js/spin.min.js");
-		// engine.executeScript(script);
 		script = new Tools().accessRessourceFile("/html/js/srcmf-error.js");
 		executejQuery(engine, DEFAULT_JQUERY_MIN_VERSION, JQUERY_LOCATION, script);
 		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/jquery.easing.min.js");
@@ -1456,21 +1568,22 @@ public class Browser extends Region {
 		script = new Tools().accessRessourceFile("/html/startbootstrap-creative-1.0.2/js/creative.js");
 		engine.executeScript(script);
 	}
-	
-	private static class ExitTrappedException extends SecurityException { }
 
-	  private static void forbidSystemExitCall() {
-	    final SecurityManager securityManager = new SecurityManager() {
-	      public void checkPermission( Permission permission ) {
-	        if( "exitVM".equals( permission.getName() ) ) {
-	          throw new ExitTrappedException() ;
-	        }
-	      }
-	    } ;
-	    System.setSecurityManager( securityManager ) ;
-	  }
+	private static class ExitTrappedException extends SecurityException {
+	}
 
-	  private static void enableSystemExitCall() {
-	    System.setSecurityManager( null ) ;
-	  }
+	private static void forbidSystemExitCall() {
+		final SecurityManager securityManager = new SecurityManager() {
+			public void checkPermission(Permission permission) {
+				if ("exitVM".equals(permission.getName())) {
+					throw new ExitTrappedException();
+				}
+			}
+		};
+		System.setSecurityManager(securityManager);
+	}
+
+	private static void enableSystemExitCall() {
+		System.setSecurityManager(null);
+	}
 }

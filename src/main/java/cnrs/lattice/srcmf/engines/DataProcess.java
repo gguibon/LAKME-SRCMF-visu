@@ -64,22 +64,25 @@ public class DataProcess {
 	 */
 	public static String getSentencesListView(List<Sentence> listSentences){
 		StringBuilder sb = new StringBuilder();
-    	sb.append("<div style=\"overflow: auto; height:400px;\"><table border=\"0\" style=\"width:100%\" "
-    			+ "class=\"table table-condensed table-responsive\"> "
-    			+ "<th>Id</th><th>Sentence</th><th>View</th>"
-    			+ "<tbody>");
+//    	sb.append("<div style=\"overflow: auto; height:400px;\"><table border=\"0\" style=\"width:100%\" "
+//    			+ "class=\"table table-condensed table-responsive\"> "
+//    			+ "<th>Id</th><th>Sentence</th><th>View</th>"
+//    			+ "<tbody>");
+    	sb.append("<table><table><th>Id</th><th>Sentence</th><th>View</th></table>"
+    			+ "<div style=\"overflow: auto; height:400px;\"><table>");
 		for (Sentence sent : listSentences){
 			sb.append("<tr><td>"
 					+ sent.getId()
 					+ "</td><td>"
 					+ sent.getStringSentence().replaceAll("'", "&apos;")
 					+ "</td><td>"
-					+ "<button id=\"sent" + sent.getId() + "\" type=\"button\" onclick=\"call.editSent(&apos;"+ sent.getId() +"&apos;)\" class=\"btn btn-info btn-xl\" >"
+					+ "<button id=\"sent" + sent.getId() + "\" type=\"button\" onclick=\"call.editSent(&apos;"+ sent.getId() +"&apos;)\" class=\"btn btn-default btn-sm\" >"
 							+ "View/Edit"
 							+ "</button>"
 					+ "</td></tr>");
 		}
-		sb.append("</tbody></table></div>");
+		sb.append("</table></div></table>");
+//		sb.append("</tbody></table></div>");
 		return sb.toString();
 	}
 	
