@@ -32,5 +32,6 @@ java -Xmx[nb RAM]G -jar LAKME-SRCMF-visu-{version}.jar
 # Contacts
 
 gael dot guibon at gmail.com
+gael dot guibon at lsis.org
 
-@2016 SRCMF LaTTiCe-CNRS# LAKME-SRCMF-visu
+@2017 SRCMF LaTTiCe-CNRS# LAKME-SRCMF-visu
